@@ -1,0 +1,7 @@
+hydra:
+  run:
+    dir: outputs/${hydra.job.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  output_subdir: .
+  callbacks:
+    my_callback:
+      _target_: flowr.training.trainer.GitSHACallback

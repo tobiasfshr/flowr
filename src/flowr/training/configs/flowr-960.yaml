@@ -1,0 +1,30 @@
+# FlowR: High-resolution finetuning config at 960px
+# Usage: python -m flowr.train --config-path=configs --config-name=flowr-960.yaml
+# Note: requires a pretrained 512px checkpoint (set ckpt_dir accordingly)
+defaults:
+  - /config
+  - defaults
+  - flowr-512
+
+hydra:
+  job:
+    name: flowr-960
+
+# Model
+num_ref_images: 2
+num_tgt_images: 2
+num_total_images: 6
+
+# Training
+max_train_steps: 55_000
+validation_steps: 10_000
+checkpointing_steps: 5_000
+learning_rate: 5e-6
+gradient_checkpointing: True
+
+# Data
+resolution: 960
+num_max_ref_images: 6
+max_inference_images:
+  - 11
+  - 8

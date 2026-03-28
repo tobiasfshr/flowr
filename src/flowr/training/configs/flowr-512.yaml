@@ -1,0 +1,48 @@
+# FlowR: Base training config at 512px resolution
+# Usage: python -m flowr.training.trainer --config-path=configs --config-name=flowr-512.yaml
+defaults:
+  - /config
+  - defaults
+
+hydra:
+  job:
+    name: flowr-512
+
+# Model
+model_cls: MultiViewFlowModel
+load_rays: True
+num_ref_images: 2
+num_tgt_images: 6
+num_total_images: 12
+use_noise: False
+use_view_idx: True
+use_diffusion_forcing: True
+
+# Training
+max_train_steps: 125_000
+validation_steps: 12_500
+checkpointing_steps: 12_500
+train_batch_size: 1
+use_8bit_adam: True
+learning_rate: 1e-5
+scale_lr: sqrt
+lr_scheduler: "cosine"
+lr_warmup_steps: 1000
+lr_num_cycles: 0.468
+
+# Data
+dataloader_num_workers: 8
+data_dir:
+  - data/processed/DL3DV
+  - data/processed/scannetpp
+test_split_paths:
+  - assets/dl3dv140.txt
+  - assets/scannetpp_val.txt
+invalid_sequences_files:
+  - assets/dl3dv_invalid.txt
+  - ""
+max_inference_images:
+  - 60
+  - 50
+resolution: 512
+psnr_bounds: [5.0, 34.0]

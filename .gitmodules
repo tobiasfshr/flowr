@@ -1,0 +1,4 @@
+[submodule "extern/colmap"]
+	path = extern/colmap
+	url = https://github.com/colmap/colmap.git
+	branch = main
