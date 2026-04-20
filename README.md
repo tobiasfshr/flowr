@@ -88,7 +88,16 @@ Evaluation data is used for benchmarking. These scenes do not need a pre-generat
 
 The [DL3DV-140](https://dl3dv-10k.github.io/DL3DV-10K/) benchmark consists of 140 diverse scenes. We evaluate with **12-view** and **24-view** sparse input settings.
 
-**Step 1:** Generate the dataset:
+**Step 1:** Download and extract the pre-computed metric scale factors:
+
+```bash
+wget https://github.com/tobiasfshr/flowr/raw/main/assets/dl3dv_scales.zip
+unzip dl3dv_scales.zip -d <SCALE_DIR>
+```
+
+This zip contains per-scene `scale_factor.txt` files for all DL3DV subsets (1K–10K and 140). To compute scale factors for other scenes yourself, see [`scale_to_metric.py`](src/flowr/util/colmap/scale_to_metric.py).
+
+**Step 2:** Generate the dataset:
 
 ```bash
 # 12-view setting
@@ -105,11 +114,11 @@ python -m flowr.prepare_dl3dv generate \
 Where:
 - `WORK_DIR`: Temporary working directory for downloads and intermediate files
 - `DATA_DIR`: Final output directory for processed data
-- `SCALE_DIR`: Directory containing per-scene `scale_factor.txt` files
+- `SCALE_DIR`: Directory containing per-scene `scale_factor.txt` files (extracted above)
 
 `--skip_other` avoids materializing the optional evaluation-time `other` split.
 
-**Step 2:** Verify that all scenes were processed successfully:
+**Step 3:** Verify that all scenes were processed successfully:
 
 ```bash
 python -m flowr.prepare_dl3dv check <DATA_DIR> --subset 140 --views 12
@@ -145,7 +154,7 @@ Training data keeps the `other` split because it provides additional supervision
 
 #### DL3DV-10K Training Subsets
 
-For training the FlowR model, we use the full DL3DV-10K dataset with 6-36 random, sparse input views:
+For training the FlowR model, we use the full DL3DV-10K dataset with 6-36 random, sparse input views. First download the scale factors as described in the [DL3DV-140 section](#dl3dv-140-benchmark) above, then run:
 
 ```bash
 python -m flowr.prepare_dl3dv generate \

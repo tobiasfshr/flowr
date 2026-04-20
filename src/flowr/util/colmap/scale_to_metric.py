@@ -170,9 +170,20 @@ if __name__ == "__main__":
     )
     parser.add_argument("model_path", type=str, help="Path to the COLMAP model directory.")
     parser.add_argument("image_path", type=str, help="Path to the image directory.")
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        default=None,
+        help="If provided, saves scale_factor.txt to this directory (creating it if needed).",
+    )
     args = parser.parse_args()
     scale_factor = scale_reconstruction(args.model_path, args.image_path)
     CONSOLE.log(scale_factor)
+    if args.output_dir is not None:
+        os.makedirs(args.output_dir, exist_ok=True)
+        with open(os.path.join(args.output_dir, "scale_factor.txt"), "w") as f:
+            f.write(str(scale_factor))
+        CONSOLE.log(f"Saved scale_factor.txt to {args.output_dir}")
     points3D = read_points3D_binary(os.path.join(args.model_path, "points3D.bin"))
     xyz, rgb = [], []
     for point3D_id in points3D:
