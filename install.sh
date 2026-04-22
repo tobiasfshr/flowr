@@ -12,7 +12,7 @@ conda install -y -c conda-forge \
   ninja \
   boost \
   ccache \
-  eigen \
+  "eigen=3.4.0" \
   flann \
   freeimage \
   lz4-c \
